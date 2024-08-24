@@ -1,24 +1,36 @@
-import React from "react";
-
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
+import React, {useState} from "react";
 
 //create your first component
 const Home = () => {
+	const [inputValue, setInputValue] = useState("")
+	const [list, setList] = useState([])
+
+	const addTask = () => {	
+		if(inputValue != ""){
+			setList(list.concat(inputValue))
+			setInputValue("")
+		}
+	}
+	
+	const deleteTask = (position) => {
+			setList(list.filter((_tarea,index) => position != index ))
+	}
+	
+
 	return (
 		<div className="text-center">
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
+			<input className="form-control form-control-lg" value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyDown={(e) => {if(e.key == "Enter"){addTask()}}} type="text" placeholder="ingresar tarea" aria-label=".form-control-lg example"></input>
+			<ul className="list-group">
+				{list.map((item,index) => {
+					return(
+						<li key={index} className="list-group-item d-flex justify-content-between">
+							<label>{item}</label>
+							<button onClick={() => deleteTask(index)} className="btn-close" ></button>
+						</li>    	  
+
+					)
+				})}
+			</ul>
 		</div>
 	);
 };
